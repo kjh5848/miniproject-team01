@@ -1,5 +1,6 @@
 package com.many.miniproject1.post;
 
+import com.many.miniproject1.main.MainResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -7,6 +8,13 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PostJPARepository extends JpaRepository<Post, Integer> {
+
+
+    @Query("SELECT new com.many.miniproject1.main.MainResponse$MainSearchDTO(p, s) FROM Post p JOIN FETCH p.skillList s WHERE s.skill IN :skills AND p.id is not null")
+    List<MainResponse.MainSearchDTO> findBySkills(@Param("skills") List<String> skills);
+
+
+
 
     @Query("""
             select distinct p from Post p join fetch p.skillList s join fetch p.user u where u.id= :id

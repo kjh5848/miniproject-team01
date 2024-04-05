@@ -27,11 +27,11 @@ public class Apply { // 지원 테이블
     private Post post; // 채용공고 아이디
 
     private String isPass; // 불합격, 합격, 검토중
+
     @CreationTimestamp
     private Timestamp createdAt;
 
     @Builder
-
     public Apply(Integer id, Resume resume, Post post, String isPass, Timestamp createdAt) {
         this.id = id;
         this.resume = resume;

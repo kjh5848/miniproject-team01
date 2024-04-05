@@ -23,6 +23,7 @@ public class Scrap {
     @JoinColumn(nullable = true)
     @ManyToOne(fetch = FetchType.LAZY)
     private Resume resume;
+
     @JoinColumn(nullable = true)
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;

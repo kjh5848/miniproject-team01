@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @DataJpaTest
@@ -19,34 +20,22 @@ public class SkillJPARepositoryTest {
     private EntityManager em;
 
     @Test
-    public void save_test() {
-        // given
-        Resume resume = Resume.builder().id(1).build();
-        List<Skill> skills = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            Skill skill = Skill.builder()
-                    .skill("JAVA")
-                    .resume(resume)
-                    .build();
-            skills.add(skill);
-        }
-        // when
-        skillJPARepository.saveAll(skills);
+    public void skills_test() {
 
-        // then
-        System.out.println("skills = " + skillJPARepository.findAll());
-    }
-
-    @Test
-    public void findSkillsByPostId_test() {
         // given
-        PostRequest.UpdateDTO reqDTO = new PostRequest.UpdateDTO();
-        reqDTO.setId(1);
+        List<String> skillNameList = Arrays.asList("Java", "spring");
+        List<Skill> skillList = new ArrayList<>();
+
+// 각 스킬에 대해 조회하여 리스트에 추가
+
+        List<Skill> skills = skillJPARepository.findBySkills(skillNameList);
+        skills.forEach(System.out::println);
+
 
         // when
-        List<Skill> skills = skillJPARepository.findSkillsByPostId(reqDTO.getId());
 
         // then
-        Assertions.assertThat(skills.getFirst().getSkill()).isEqualTo("JAVA");
+
     }
+
 }

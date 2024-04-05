@@ -14,9 +14,32 @@ import java.util.stream.Collectors;
 
 public class MainResponse {
 
+    @Data
+    public static class MainSearchDTO {
+        private Integer id;
+        private String profile;
+        private String title;
+        private String task;
+        private String career;
+        private String workingArea;
+        private String skills;
+
+        public MainSearchDTO(Post post, Skill skills) {
+            this.id = post.getId();
+            this.profile = post.getProfile();
+            this.title = post.getTitle();
+            this.task = post.getTask();
+            this.career = post.getCareer();
+            this.workingArea = post.getWorkingArea();
+            this.skills = skills.getSkill();
+//            this.skills = skills.stream().map(skill -> skill.getSkill()).collect(Collectors.joining(","));
+
+        }
+    }
+
 
     @Data
-    public static class mainResumesDTO{
+    public static class mainResumesDTO {
         int resumeId;
         String profile;
         String title;
@@ -25,7 +48,7 @@ public class MainResponse {
         List<SkillDTO> sklls = new ArrayList<>();
 
         @Data
-        public class SkillDTO{
+        public class SkillDTO {
             private int id;
             private String skill;
 

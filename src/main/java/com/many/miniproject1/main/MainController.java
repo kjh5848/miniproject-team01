@@ -8,6 +8,8 @@ import com.many.miniproject1.resume.Resume;
 import com.many.miniproject1.apply.Apply;
 import com.many.miniproject1.scrap.Scrap;
 import com.many.miniproject1.scrap.ScrapResponse;
+import com.many.miniproject1.skill.Skill;
+import com.many.miniproject1.skill.SkillJPARepository;
 import com.many.miniproject1.user.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -19,9 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Controller
@@ -30,6 +30,7 @@ public class MainController {
 
     private final HttpSession session;
     private final MainService mainService;
+    private final SkillJPARepository skillJPARepository;
 
 
     //맞춤 공고 - 기업이 보는 매칭 이력서
@@ -109,9 +110,12 @@ public class MainController {
 
     //메인 채용 공고
     @GetMapping({"/person/main", "/"})
-    public String postForm(HttpServletRequest request) {
-        // 목적: 개인 회원 로그인/비회원 로그인 시 공고들이 보임
+    public String postForm(HttpServletRequest request, @RequestParam(value = "skills", defaultValue = "") String skills) {
         User sessionUser = (User) session.getAttribute("sessionUser");
+            mainService.main(skills,sessionUser);
+//        mainSearchList.forEach(System.out::println);
+
+        // 목적: 개인 회원 로그인/비회원 로그인 시 공고들이 보임
 
         //기업인지 개인인지 구분
         Boolean isCompany = false;

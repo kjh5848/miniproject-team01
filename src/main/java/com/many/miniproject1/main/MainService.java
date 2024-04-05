@@ -31,7 +31,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import java.util.Comparator;
 import java.util.List;
@@ -50,13 +49,24 @@ public class MainService {
     private final SkillJPARepository skillJPARepository;
     private final UserService userService;
 
+
+    public MainResponse.MainSearchDTO main(String skills, User sessionUser) {
+        List<String> skillNameList = List.of(skills.split(","));
+        List<MainResponse.MainSearchDTO> skillsList = postJPARepository.findBySkills(skillNameList);
+
+        skillsList.forEach(System.out::println);
+
+        return null;
+    }
+
+
     public List<MainResponse.mainResumesDTO> mainResumes() {
         List<Resume> mainResumes = resumeJPARepository.mainAllResume();
 
         return mainResumes.stream().map(resume -> new MainResponse.mainResumesDTO(resume)).toList();
     }
 
-    public ScrapResponse.MainResumeScrapDTO resumeScrap(int resumeId, int userId){
+    public ScrapResponse.MainResumeScrapDTO resumeScrap(int resumeId, int userId) {
         User user = userService.findByUser(userId);
         Resume resume = resumeJPARepository.findById(resumeId)
                 .orElseThrow(() -> new Exception401(""));
@@ -177,6 +187,7 @@ public class MainService {
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         return resumeJPARepository.findAll(sort);
     }
+
     public List<Post> postForm() {
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         return postJPARepository.findAll(sort);
